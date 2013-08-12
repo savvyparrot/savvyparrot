@@ -83,7 +83,10 @@ module.exports = require(process.env['LINEMAN_MAIN']).config.extend('application
         {src: "vendor/font-awesome/font/fontawesome-webfont.eot",  dest: "generated/img/fontawesome-webfont.eot"},
         {src: "vendor/font-awesome/font/fontawesome-webfont.svg",  dest: "generated/img/fontawesome-webfont.svg"},
         {src: "vendor/font-awesome/font/fontawesome-webfont.ttf",  dest: "generated/img/fontawesome-webfont.ttf"},
-        {src: "vendor/font-awesome/font/fontawesome-webfont.woff", dest: "generated/img/fontawesome-webfont.woff"}
+        {src: "vendor/font-awesome/font/fontawesome-webfont.woff", dest: "generated/img/fontawesome-webfont.woff"},
+        {src: "vendor/lesson-04-001/img/farmhouse.png",            dest: "generated/img/farmhouse.png"},
+        {src: "vendor/lesson-04-001/img/island.png",               dest: "generated/img/island.png"},
+        {src: "vendor/lesson-04-001/sound/pepi.mp3",               dest: "generated/sound/pepi.mp3"}
       ]
     },
     dist: {
@@ -94,7 +97,10 @@ module.exports = require(process.env['LINEMAN_MAIN']).config.extend('application
         {src: "vendor/font-awesome/font/fontawesome-webfont.eot",  dest: "dist/img/fontawesome-webfont.eot"},
         {src: "vendor/font-awesome/font/fontawesome-webfont.svg",  dest: "dist/img/fontawesome-webfont.svg"},
         {src: "vendor/font-awesome/font/fontawesome-webfont.ttf",  dest: "dist/img/fontawesome-webfont.ttf"},
-        {src: "vendor/font-awesome/font/fontawesome-webfont.woff", dest: "dist/img/fontawesome-webfont.woff"}
+        {src: "vendor/font-awesome/font/fontawesome-webfont.woff", dest: "dist/img/fontawesome-webfont.woff"},
+        {src: "vendor/lesson-04-001/img/farmhouse.png",            dest: "dist/img/farmhouse.png"},
+        {src: "vendor/lesson-04-001/img/island.png",               dest: "dist/img/island.png"},
+        {src: "vendor/lesson-04-001/sound/pepi.mp3",               dest: "dist/sound/pepi.mp3"}
       ]
     }
   },
