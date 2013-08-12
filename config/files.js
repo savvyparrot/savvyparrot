@@ -39,11 +39,7 @@ module.exports = require(process.env['LINEMAN_MAIN']).config.extend('files', {
       "vendor/bootstrap/js/bootstrap-transition.js",
       "vendor/angular/angular.js",
       "vendor/underscore/underscore.js",
-
-      "vendor/EaselJS/lib/easeljs-0.6.1.min.js",
-      "vendor/TweenJS/lib/tweenjs-0.4.1.min.js",
-      "vendor/EaselJS/lib/movieclip-0.6.1.min.js",
-
+      "vendor/lesson-04-001/lesson-04-001.js",
       "vendor/google-analytics/tracking-code.js"
     ],
     app: [
