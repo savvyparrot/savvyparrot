@@ -2,10 +2,11 @@
 
 # Include node_modules because the project is "deployed".
 # See http://www.mikealrogers.com/posts/nodemodules-in-git.html
-#/node_modules
+# The basic idea is to lock independencies for applications but not for libraries.
 
 # Include /dist because we don't know how to build it yet on Heroku.
-#/dist
+# This would involve setting up a build pack for our hybrid project.
+# Then we would have to worry about maintaining it. Better as we are?
 
 # Ignore the generated files, which are only there for development.
 /generated

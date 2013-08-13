@@ -18,9 +18,9 @@ angular.module("app").controller('PepiCtrl', ['$rootScope','$scope', '$http', '$
     return
 
   manifest = [
-    {src:"/img/farmhouse.png", id:'img-farmhouse'},
-    {src:"/img/island.png",    id:"img-island"},
-    {src:"/sound/pepi.mp3",    id:"sound-pepi"}
+    {src:"/img/farmhouse.png",              id:'img-farmhouse'},
+    {src:"/img/island.png",                 id:"img-island"},
+    {src:"/sound/pepi.mp3|/sound/pepi.ogg", id:"sound-pepi"}
   ]
 
   loader = new createjs.LoadQueue(false)
