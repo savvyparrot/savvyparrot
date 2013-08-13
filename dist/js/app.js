@@ -26526,7 +26526,7 @@ var lib, images, createjs;
           id: 'img-island'
         },
         {
-          src: '/sound/pepi.mp3',
+          src: '/sound/pepi.mp3|/sound/pepi.ogg',
           id: 'sound-pepi'
         }
       ];
