@@ -17,7 +17,7 @@ var p; // shortcut to reference prototypes
 
   this.timeline.addTween(cjs.Tween.get(this).wait(TIME_WELCOME).call(welcomeSound).wait(40));
 
-  var bubble = new SavvyParrot.Bubble("synched", 0, "Hey Brats!\nGet the hell off my island! Aawk!!");
+  var bubble = new SavvyParrot.Bubble("synched", 0, "Hola Kids!\nBienvenido a mi isla! Aawk!!");
   bubble.setTransform(684,167.5,1,1,0,0,0,216,92.5);
   bubble._off = true;
   var bubbleTween = cjs.Tween.get(bubble);
