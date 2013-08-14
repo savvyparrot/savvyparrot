@@ -40,8 +40,7 @@ module.exports = require(process.env['LINEMAN_MAIN']).config.extend('files', {
       "vendor/angular/angular.js",
       "vendor/underscore/underscore.js",
       "../savvyparrot-actors/generated/js/app.js",
-      "vendor/lesson-00-001/lesson-00-001.js",
-      "vendor/lesson-04-001/lesson-04-001.js",
+      "../savvyparrot-adventure-04/generated/js/app.js",
       "vendor/google-analytics/tracking-code.js"
     ],
     app: [
