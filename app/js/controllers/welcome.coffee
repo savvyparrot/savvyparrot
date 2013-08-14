@@ -1,4 +1,4 @@
-angular.module("app").controller('PepiCtrl', ['$rootScope','$scope', '$http', '$location', '$window', ($rootScope, $scope, $http, $location, $window) ->
+angular.module("app").controller('WelcomeCtrl', ['$rootScope','$scope', '$http', '$location', '$window', ($rootScope, $scope, $http, $location, $window) ->
 
   canvas = document.getElementById("canvas")
   stage = new createjs.Stage(canvas)
@@ -9,7 +9,7 @@ angular.module("app").controller('PepiCtrl', ['$rootScope','$scope', '$http', '$
     return
 
   handleComplete = () ->
-    movieClip = new lib.PepiMovieClip(null, 0, false, window)
+    movieClip = new lib.WelcomeMovieClip(null, 0, false, window)
     stage.addChild(movieClip)
     stage.update()
 

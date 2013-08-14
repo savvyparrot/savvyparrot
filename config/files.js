@@ -39,6 +39,12 @@ module.exports = require(process.env['LINEMAN_MAIN']).config.extend('files', {
       "vendor/bootstrap/js/bootstrap-transition.js",
       "vendor/angular/angular.js",
       "vendor/underscore/underscore.js",
+      "vendor/lesson-00-001/SavvyParrot.js",
+      "vendor/lesson-00-001/Bubble.js",
+      "vendor/lesson-00-001/Farm.js",
+      "vendor/lesson-00-001/Island.js",
+      "vendor/lesson-00-001/Pepi.js",
+      "vendor/lesson-00-001/lesson-00-001.js",
       "vendor/lesson-04-001/lesson-04-001.js",
       "vendor/google-analytics/tracking-code.js"
     ],
