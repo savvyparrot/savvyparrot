@@ -9,7 +9,7 @@ angular.module("app").controller('WelcomeCtrl', ['$rootScope','$scope', '$http',
     return
 
   handleComplete = () ->
-    movieClip = new lib.WelcomeMovieClip(null, 0, false, window)
+    movieClip = new SavvyParrot.Adventure04Lesson001(null, 0, false, window)
     stage.addChild(movieClip)
     stage.update()
 

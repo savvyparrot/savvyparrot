@@ -9,7 +9,7 @@ angular.module("app").controller('PepiCtrl', ['$rootScope','$scope', '$http', '$
     return
 
   handleComplete = () ->
-    movieClip = new lib.PepiMovieClip(null, 0, false, window)
+    movieClip = new SavvyParrot.Adventure04Lesson002(null, 0, false, window)
     stage.addChild(movieClip)
     stage.update()
 
