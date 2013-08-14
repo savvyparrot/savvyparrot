@@ -11,7 +11,7 @@ var p; // shortcut to reference prototypes
 
   this.timeline.addTween(cjs.Tween.get(this).wait(119).call(this.frame_119).wait(40));
 
-  this.instance = new SavvyParrot.Bubble("synched", 0, "Hello Kids!\nWelcome to my island!");
+  this.instance = new SavvyParrot.Bubble("synched", 0, "Hello Kids!\nWelcome to my island!", "#33FF66");
   this.instance.setTransform(684,167.5,1,1,0,0,0,216,92.5);
   this.instance._off = true;
 
