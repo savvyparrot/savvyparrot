@@ -1,6 +1,6 @@
 {
   "name": "savvyparrot",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "main": "./app/js/main.js",
   "description": ".",
   "author": {
@@ -9,15 +9,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/savvyparrot/webapp.git"
+    "url": "git://github.com/savvyparrot/savvyparrot.git"
   },
   "bugs": {
-    "url": "https://github.com/savvyparrot/webapp/issues"
+    "url": "https://github.com/savvyparrot/savvyparrot/issues"
   },
   "licenses": [
     {
       "type": "???",
-      "url": "https://github.com/savvyparrot/webapp/LICENSE"
+      "url": "https://github.com/savvyparrot/savvyparrot/LICENSE"
     }
   ],
   "dependencies": {
