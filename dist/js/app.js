@@ -26679,33 +26679,37 @@ angular.element(document).find('head').append('<style type="text/css">@charset "
   }(this, 'SavvyParrot', 'Farm'));
 }.call(this));
 (function () {
-  (function (root, targetNS, localName) {
-    var IslandBitmap, IslandContainer;
+  (function (root, targetNS, localName, imageId, screenWidth, screenHeight) {
+    var IMAGE_HEIGHT_PIXELS, IMAGE_WIDTH_PIXELS, IslandBitmap, IslandContainer, SCALE_X, SCALE_Y;
     root[targetNS] = root[targetNS] || {};
     IslandBitmap = function () {
-      this.initialize(root[targetNS].images['img-island']);
+      this.initialize(root[targetNS].images[imageId]);
     };
+    IMAGE_WIDTH_PIXELS = 1523;
+    IMAGE_HEIGHT_PIXELS = 1219;
     IslandBitmap.prototype = new createjs.Bitmap();
-    IslandBitmap.prototype.nominalBounds = new createjs.Rectangle(0, 0, 1523, 1219);
+    IslandBitmap.prototype.nominalBounds = new createjs.Rectangle(0, 0, IMAGE_WIDTH_PIXELS, IMAGE_HEIGHT_PIXELS);
+    SCALE_X = screenWidth / IMAGE_WIDTH_PIXELS;
+    SCALE_Y = screenHeight / IMAGE_HEIGHT_PIXELS;
     IslandContainer = function () {
       var bitmap;
       this.initialize();
       bitmap = new IslandBitmap();
-      bitmap.setTransform(-538.9, -384.9, 0.672, 0.63);
+      bitmap.setTransform(0, 0, SCALE_X, SCALE_Y);
       this.addChild(bitmap);
     };
     IslandContainer.prototype = new createjs.Container();
-    IslandContainer.prototype.nominalBounds = new createjs.Rectangle(-538.9, -384.9, 1024, 768);
+    IslandContainer.prototype.nominalBounds = new createjs.Rectangle(0, 0, screenWidth, screenHeight);
     root[targetNS][localName] = function () {
       var container;
       this.initialize();
       container = new IslandContainer();
-      container.setTransform(1051, 769, 1, 1, 0, 0, 0, 512, 384);
+      container.setTransform(0, 0, 1, 1, 0, 0, 0, 0, 0);
       this.addChild(container);
     };
     root[targetNS][localName].prototype = new createjs.Container();
-    root[targetNS][localName].prototype.nominalBounds = new createjs.Rectangle(0, 0, 1024, 768);
-  }(this, 'SavvyParrot', 'Island'));
+    root[targetNS][localName].prototype.nominalBounds = new createjs.Rectangle(0, 0, screenWidth, screenHeight);
+  }(this, 'SavvyParrot', 'Island', 'img-island', 1024, 768));
 }.call(this));
 (function () {
   (function (root, targetNS, localName) {
@@ -28126,21 +28130,44 @@ angular.element(document).find('head').append('<style type="text/css">@charset "
   });
 }.call(this));
 (function () {
-  (function (root, targetNS, localName, savvy, cjs) {
+  (function (root, targetNS, localName, sp, cj) {
     root[targetNS][localName] = function (mode, startPosition, doLoop) {
-      var TIME_PEPI_ENTRANCE, TIME_WELCOME, args, bubble, bubbleTween, i, island, islandTween, pepi, pepiTween, welcomeSound, x, y, _i;
+      var TIME_PEPI_ENTRANCE, TIME_PEPI_ON_STAGE, bubble, bubbleTween, island, islandTween, pepi, translate, welcomeSound;
       this.initialize(mode, startPosition, doLoop, {});
+      translate = function (target, startTime, startPoint, endTime, endPoint) {
+        var duration, dx, dy, i, tween, x, y, _i;
+        target.setTransform(startPoint.x, startPoint.y, 1, 1, 0, 0, 0, 0, 0);
+        target._off = false;
+        tween = cj.Tween.get(target);
+        tween.wait(startTime).to({ '_off': false }, 0);
+        duration = endTime - startTime;
+        x = startPoint.x;
+        y = startPoint.y;
+        dx = (endPoint.x - startPoint.x) / duration;
+        dy = (endPoint.y - startPoint.y) / duration;
+        for (i = _i = 1; 1 <= duration ? _i <= duration : _i >= duration; i = 1 <= duration ? ++_i : --_i) {
+          x += dx;
+          y += dy;
+          tween.wait(1).to({
+            'x': x,
+            'y': y
+          }, 0);
+        }
+        return tween;
+      };
       welcomeSound = function () {
-        cjs.Sound.play('sound-pepi', cjs.Sound.INTERRUPT_EARLY, 0, 0, void 0);
+        cj.Sound.play('sound-pepi', cj.Sound.INTERRUPT_EARLY, 0, 0, void 0);
       };
       TIME_PEPI_ENTRANCE = 16;
-      TIME_WELCOME = TIME_PEPI_ENTRANCE + 31;
-      this.timeline.addTween(cjs.Tween.get(this).wait(TIME_WELCOME).call(welcomeSound).wait(40));
-      bubble = new savvy.Bubble('synched', 0, 'Hola Kids!\nBienvenido a mi isla! Aawk!!', '#33FF66');
+      TIME_PEPI_ON_STAGE = TIME_PEPI_ENTRANCE + 31;
+      pepi = new sp.Pepi();
+      this.timeline.addTween(translate(pepi, TIME_PEPI_ENTRANCE, new cj.Point(-450, -100), TIME_PEPI_ON_STAGE, new cj.Point(-110, 110)));
+      this.timeline.addTween(cj.Tween.get(this).wait(TIME_PEPI_ON_STAGE).call(welcomeSound));
+      bubble = new sp.Bubble('synched', 0, 'Hello Kids!\nWelcome to my island!', '#33FF66');
       bubble.setTransform(684, 167.5, 1, 1, 0, 0, 0, 216, 92.5);
       bubble._off = true;
-      bubbleTween = cjs.Tween.get(bubble);
-      bubbleTween.wait(TIME_WELCOME);
+      bubbleTween = cj.Tween.get(bubble);
+      bubbleTween.wait(TIME_PEPI_ON_STAGE);
       bubbleTween.to({
         'startPosition': 0,
         '_off': false
@@ -28148,39 +28175,12 @@ angular.element(document).find('head').append('<style type="text/css">@charset "
       bubbleTween.wait(50);
       bubbleTween.to({ '_off': true }, 0);
       this.timeline.addTween(bubbleTween);
-      pepi = new savvy.Pepi();
-      pepi.setTransform(-253.9, 428.1, 1, 1, 0, 0, 0, 224.5, 331.2);
-      pepi._off = true;
-      pepiTween = cjs.Tween.get(pepi);
-      pepiTween.wait(TIME_PEPI_ENTRANCE).to({ '_off': false }, 0);
-      x = -238.4;
-      y = 426.9;
-      for (i = _i = 0; _i <= 31; i = ++_i) {
-        args = {
-          'x': x,
-          'y': y
-        };
-        pepiTween.wait(1).to(args, 0);
-        x += 14.932258;
-        y -= 1.15483871;
-      }
-      this.timeline.addTween(pepiTween);
-      island = new savvy.Island();
-      island.setTransform(525.5, 384.4, 1, 1, 0, 0, 0, 525.5, 384.4);
-      islandTween = cjs.Tween.get(island);
-      islandTween.wait(1).to({
-        regX: 512,
-        regY: 384,
-        scaleX: 1.09,
-        scaleY: 1.09,
-        x: 542.6,
-        y: 391.5,
-        alpha: 0.98
-      }, 0);
+      island = new sp.Island();
+      islandTween = cj.Tween.get(island);
       this.timeline.addTween(islandTween);
     };
-    root[targetNS][localName].prototype = new cjs.MovieClip();
-    root[targetNS][localName].prototype.nominalBounds = new cjs.Rectangle(0, 0, 1024, 768);
+    root[targetNS][localName].prototype = new cj.MovieClip();
+    root[targetNS][localName].prototype.nominalBounds = new cj.Rectangle(0, 0, 1024, 768);
   }(this, 'SavvyParrot', 'Adventure04Lesson001', SavvyParrot, createjs));
 }.call(this));
 (function () {
@@ -28425,6 +28425,214 @@ angular.element(document).find('head').append('<style type="text/css">@charset "
   }(this, 'SavvyParrot', 'Adventure04Lesson003', SavvyParrot, createjs));
 }.call(this));
 (function () {
+  (function (root, targetNS, localName, savvy, cjs) {
+    root[targetNS][localName] = function (mode, startPosition, doLoop) {
+      var FarmMovieClip, enterPepiStageLeft, islandZoomInToBarn, playBubble, showBubble, showFarm;
+      this.initialize(mode, startPosition, doLoop, {});
+      FarmMovieClip = function (mode, startPosition, doLoop) {
+        var farm0, farm1, tween;
+        this.initialize(mode, startPosition, doLoop, {});
+        farm0 = new SavvyParrot.Farm('synched', 0);
+        farm0.setTransform(97, 20.1);
+        farm0.alpha = 1;
+        farm1 = new SavvyParrot.Farm('synched', 0);
+        farm1.setTransform(512, 384);
+        farm1.alpha = 0.25;
+        tween = cjs.Tween.get({});
+        tween.to({ 'state': [{ 't': farm0 }] }, 0);
+        tween.to({ 'state': [{ 't': farm1 }] }, 24);
+        this.timeline.addTween(tween);
+      };
+      FarmMovieClip.prototype = new cjs.MovieClip();
+      FarmMovieClip.prototype.nominalBounds = new cjs.Rectangle(-414.9, -363.9, 1024, 768);
+      islandZoomInToBarn = function () {
+        var alpha, args, i, island, scale, tween, x, y, _i, _j;
+        island = new SavvyParrot.Island();
+        island.setTransform(525.5, 384.4, 1, 1, 0, 0, 0, 525.5, 384.4);
+        tween = cjs.Tween.get(island);
+        tween.wait(1).to({
+          regX: 512,
+          regY: 384,
+          scaleX: 1.09,
+          scaleY: 1.09,
+          x: 542.6,
+          y: 391.5,
+          alpha: 0.98
+        }, 0);
+        scale = 1.18;
+        x = 573.2;
+        y = 399;
+        alpha = 0.959;
+        for (i = _i = 0; _i <= 31; i = ++_i) {
+          args = {
+            'scaleX': scale,
+            'scaleY': scale,
+            'x': x,
+            'y': y,
+            'alpha': alpha
+          };
+          tween.wait(1).to(args, 0);
+          scale += 0.0909677;
+          x += 30.5935;
+          y += 7.47096;
+          alpha -= 0.020387;
+        }
+        for (i = _j = 0; _j <= 11; i = ++_j) {
+          args = { 'alpha': alpha };
+          tween.wait(1).to(args, 0);
+          alpha -= 0.02;
+        }
+        tween.to({ _off: true }, 1);
+        return tween;
+      };
+      showFarm = function () {
+        var farmMovieClip, tween;
+        farmMovieClip = new FarmMovieClip();
+        farmMovieClip.setTransform(961, 812.9, 1, 1, 0, 0, 0, 546, 448.9);
+        farmMovieClip.alpha = 0;
+        farmMovieClip._off = true;
+        tween = cjs.Tween.get(farmMovieClip);
+        tween.wait(34);
+        tween.to({ _off: false }, 0);
+        tween.to({ alpha: 1 }, 24);
+        tween.wait(10);
+        tween.to({ alpha: 0.211 }, 20);
+        tween.wait(72);
+        return tween;
+      };
+      enterPepiStageLeft = function () {
+        var pepi, tween;
+        pepi = new SavvyParrot.Pepi();
+        pepi.setTransform(-253.9, 428.1, 1, 1, 0, 0, 0, 224.5, 331.2);
+        pepi._off = true;
+        tween = cjs.Tween.get(pepi);
+        tween.wait(88).to({ _off: false }, 0).wait(1).to({
+          x: -238.4,
+          y: 426.9
+        }, 0).wait(1).to({
+          x: -222.9,
+          y: 425.7
+        }, 0).wait(1).to({
+          x: -207.5,
+          y: 424.5
+        }, 0).wait(1).to({
+          x: -192.1,
+          y: 423.3
+        }, 0).wait(1).to({
+          x: -176.6,
+          y: 422.1
+        }, 0).wait(1).to({
+          x: -161.2,
+          y: 420.9
+        }, 0).wait(1).to({
+          x: -145.8,
+          y: 419.7
+        }, 0).wait(1).to({
+          x: -130.3,
+          y: 418.5
+        }, 0).wait(1).to({
+          x: -114.9,
+          y: 417.3
+        }, 0).wait(1).to({
+          x: -99.4,
+          y: 416.1
+        }, 0).wait(1).to({
+          x: -84,
+          y: 414.9
+        }, 0).wait(1).to({
+          x: -68.6,
+          y: 413.7
+        }, 0).wait(1).to({
+          x: -53.1,
+          y: 412.5
+        }, 0).wait(1).to({
+          x: -37.7,
+          y: 411.3
+        }, 0).wait(1).to({
+          x: -22.3,
+          y: 410.1
+        }, 0).wait(1).to({
+          x: -6.8,
+          y: 409
+        }, 0).wait(1).to({
+          x: 8.5,
+          y: 407.8
+        }, 0).wait(1).to({
+          x: 23.9,
+          y: 406.6
+        }, 0).wait(1).to({
+          x: 39.3,
+          y: 405.4
+        }, 0).wait(1).to({
+          x: 54.8,
+          y: 404.2
+        }, 0).wait(1).to({
+          x: 70.2,
+          y: 403
+        }, 0).wait(1).to({
+          x: 85.6,
+          y: 401.8
+        }, 0).wait(1).to({
+          x: 101.1,
+          y: 400.6
+        }, 0).wait(1).to({
+          x: 116.5,
+          y: 399.4
+        }, 0).wait(1).to({
+          x: 131.9,
+          y: 398.2
+        }, 0).wait(1).to({
+          x: 147.4,
+          y: 397
+        }, 0).wait(1).to({
+          x: 162.8,
+          y: 395.8
+        }, 0).wait(1).to({
+          x: 178.2,
+          y: 394.6
+        }, 0).wait(1).to({
+          x: 193.7,
+          y: 393.4
+        }, 0).wait(1).to({
+          x: 209.1,
+          y: 392.2
+        }, 0).wait(1).to({
+          x: 224.5,
+          y: 391.1
+        }, 0).wait(41);
+        return tween;
+      };
+      showBubble = function (text) {
+        var bubble, tween;
+        bubble = new SavvyParrot.Bubble('synched', 0, text, '#33FF66');
+        bubble.setTransform(684, 167.5, 1, 1, 0, 0, 0, 216, 92.5);
+        bubble._off = true;
+        tween = cjs.Tween.get(bubble);
+        tween.wait(119).to({
+          startPosition: 0,
+          _off: false
+        }, 0);
+        return tween;
+      };
+      playBubble = function (target, soundId) {
+        var tween, welcomeSoundClip;
+        welcomeSoundClip = function () {
+          return createjs.Sound.play(soundId, createjs.Sound.INTERRUPT_EARLY, 0, 0, void 0);
+        };
+        tween = cjs.Tween.get(target).wait(119).call(welcomeSoundClip).wait(40);
+        return tween;
+      };
+      this.timeline.addTween(enterPepiStageLeft());
+      this.timeline.addTween(showBubble('Hello Kids!\nWelcome to my island!'));
+      this.timeline.addTween(playBubble(this, 'sound-pepi'));
+      this.timeline.addTween(showFarm());
+      this.timeline.addTween(islandZoomInToBarn());
+    };
+    root[targetNS][localName].prototype = new cjs.MovieClip();
+    root[targetNS][localName].prototype.nominalBounds = new cjs.Rectangle(0, 0, 1024, 768);
+  }(this, 'SavvyParrot', 'Adventure04Lesson004', SavvyParrot, createjs));
+}.call(this));
+(function () {
   angular.module('app', [
     'async',
     'jquery',
@@ -28444,6 +28652,52 @@ angular.element(document).find('head').append('<style type="text/css">@charset "
     '$location',
     '$window',
     function ($rootScope, $scope, $http, $location, $window) {
+    }
+  ]);
+}.call(this));
+(function () {
+  angular.module('app').controller('MovieCtrl', [
+    '$rootScope',
+    '$scope',
+    '$http',
+    '$location',
+    '$window',
+    function ($rootScope, $scope, $http, $location, $window) {
+      var canvas, handleComplete, handleFileLoad, loader, manifest, stage;
+      canvas = document.getElementById('canvas');
+      stage = new createjs.Stage(canvas);
+      handleFileLoad = function (event) {
+        if (event.item.type === 'image') {
+          SavvyParrot.images[event.item.id] = event.result;
+        }
+      };
+      handleComplete = function () {
+        var movieClip;
+        movieClip = new SavvyParrot.Adventure04Lesson004(null, 0, false, window);
+        stage.addChild(movieClip);
+        stage.update();
+        createjs.Ticker.setFPS(16);
+        createjs.Ticker.addEventListener('tick', stage);
+      };
+      manifest = [
+        {
+          src: '/img/farmhouse.png',
+          id: 'img-farmhouse'
+        },
+        {
+          src: '/img/island.png',
+          id: 'img-island'
+        },
+        {
+          src: '/sound/pepi.mp3|/sound/pepi.ogg',
+          id: 'sound-pepi'
+        }
+      ];
+      loader = new createjs.LoadQueue(false);
+      loader.installPlugin(createjs.Sound);
+      loader.addEventListener('fileload', handleFileLoad);
+      loader.addEventListener('complete', handleComplete);
+      return loader.loadManifest(manifest);
     }
   ]);
 }.call(this));
@@ -28591,6 +28845,10 @@ angular.element(document).find('head').append('<style type="text/css">@charset "
         templateUrl: 'angular/pepi.html',
         controller: 'PepiCtrl'
       });
+      $routeProvider.when('/movie', {
+        templateUrl: 'angular/movie.html',
+        controller: 'MovieCtrl'
+      });
       $routeProvider.otherwise({ redirectTo: '/' });
       return $locationProvider.html5Mode(true);
     }
@@ -28627,6 +28885,7 @@ angular.module('app').run([
     $templateCache.put('angular/a-home.html', '<a href="/">\n' + '  <i class="icon-home"></i>\n' + '  <span>Home</span>\n' + '</a>\n');
     $templateCache.put('angular/form-search.html', '<form class="navbar-search pull-right ng-pristine ng-valid" method="GET" action="https://www.google.com/search">\n' + '  <input type="text" name="as_q" class="search-query" placeholder="Search">\n' + '  <input type="hidden" name="as_sitesearch" value="savvyparrot.com">\n' + '</form>\n');
     $templateCache.put('angular/home.html', '<div id="home-view">\n' + '  <div class="subnavbar">\n' + '    <div class="subnavbar-inner">\n' + '      <div class="container">\n' + '        <a class="btn-subnavbar collapsed" data-toggle="collapse" data-target=".subnav-collapse">\n' + '          <i class="icon-reorder"></i>\n' + '        </a>\n' + '        <div class="subnav-collapse collapse">\n' + '          <ul class="mainnav">\n' + '            <li class="active">\n' + '              <a-home></a-home>\n' + '            </li>\n' + '          </ul>\n' + '        </div>\n' + '      </div>\n' + '    </div>\n' + '  </div>\n' + '\n' + '  <div class="container-fluid">\n' + '    <div class="row-fluid">\n' + '\n' + '    </div>\n' + '  </div>\n' + '</div>\n');
+    $templateCache.put('angular/movie.html', '<div id="pepe-view">\n' + '  <div class="subnavbar">\n' + '    <div class="subnavbar-inner">\n' + '      <div class="container">\n' + '        <a class="btn-subnavbar collapsed" data-toggle="collapse" data-target=".subnav-collapse">\n' + '          <i class="icon-reorder"></i>\n' + '        </a>\n' + '        <div class="subnav-collapse collapse">\n' + '          <ul class="mainnav">\n' + '            <li>\n' + '              <a-home></a-home>\n' + '            </li>\n' + '          </ul>\n' + '        </div>\n' + '      </div>\n' + '    </div>\n' + '  </div>\n' + '\n' + '  <div class="container-fluid">\n' + '    <div class="row-fluid">\n' + '      <canvas id="canvas" width="1024" height="768" style="background-color:#FFFFFF"></canvas>\n' + '    </div>\n' + '  </div>\n' + '</div>\n');
     $templateCache.put('angular/pepi.html', '<div id="pepe-view">\n' + '  <div class="subnavbar">\n' + '    <div class="subnavbar-inner">\n' + '      <div class="container">\n' + '        <a class="btn-subnavbar collapsed" data-toggle="collapse" data-target=".subnav-collapse">\n' + '          <i class="icon-reorder"></i>\n' + '        </a>\n' + '        <div class="subnav-collapse collapse">\n' + '          <ul class="mainnav">\n' + '            <li>\n' + '              <a-home></a-home>\n' + '            </li>\n' + '          </ul>\n' + '        </div>\n' + '      </div>\n' + '    </div>\n' + '  </div>\n' + '\n' + '  <div class="container-fluid">\n' + '    <div class="row-fluid">\n' + '      <canvas id="canvas" width="1024" height="768" style="background-color:#FFFFFF"></canvas>\n' + '    </div>\n' + '  </div>\n' + '</div>\n');
     $templateCache.put('angular/title-marketing.html', '<title>Adventures on Pepi\'s Island</title>');
     $templateCache.put('angular/welcome.html', '<div id="pepe-view">\n' + '  <div class="subnavbar">\n' + '    <div class="subnavbar-inner">\n' + '      <div class="container">\n' + '        <a class="btn-subnavbar collapsed" data-toggle="collapse" data-target=".subnav-collapse">\n' + '          <i class="icon-reorder"></i>\n' + '        </a>\n' + '        <div class="subnav-collapse collapse">\n' + '          <ul class="mainnav">\n' + '            <li>\n' + '              <a-home></a-home>\n' + '            </li>\n' + '          </ul>\n' + '        </div>\n' + '      </div>\n' + '    </div>\n' + '  </div>\n' + '\n' + '  <div class="container-fluid">\n' + '    <div class="row-fluid">\n' + '      <canvas id="canvas" width="1024" height="768" style="background-color:#FFFFFF"></canvas>\n' + '    </div>\n' + '  </div>\n' + '</div>\n');
