@@ -18,8 +18,8 @@ angular.module("app").controller('MovieCtrl', ['$rootScope','$scope', '$http', '
     return
 
   manifest = [
-    {src:"/img/farmhouse.png",              id:'img-farmhouse'},
-    {src:"/img/island.png",                 id:"img-island"},
+    {src:"/img/farmhouse-1500x1201.png",    id:'img-farmhouse'},
+    {src:"/img/island-1523x1219.png",       id:"img-island"},
     {src:"/sound/pepi.mp3|/sound/pepi.ogg", id:"sound-pepi"}
   ]
 
