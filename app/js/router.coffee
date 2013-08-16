@@ -13,6 +13,10 @@ angular.module("app").config(['$routeProvider', '$locationProvider', ($routeProv
     templateUrl: 'angular/pepi.html'
     controller: 'PepiCtrl'
 
+  $routeProvider.when '/movie',
+    templateUrl: 'angular/movie.html'
+    controller: 'MovieCtrl'
+
   $routeProvider.otherwise redirectTo: '/'
 
   $locationProvider.html5Mode(true)
