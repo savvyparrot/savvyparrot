@@ -1,6 +1,6 @@
 {
   "name": "savvyparrot",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "main": "./app/js/main.js",
   "description": ".",
   "author": {
