@@ -9,37 +9,9 @@ html(lang="en", data-ng-app="app")
     meta(name="author", edit="SavvyParrot.com")
     meta(name="copyright", content="")
     meta(name="description", content="")
-    link(rel="stylesheet", href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600")
     link(rel="stylesheet", href=css, media="all")
-    link(rel="icon", type="image/png", href="/img/favicon-48x48.png")
   body
-    header
-      div.navbar.navbar-inverse.navbar-fixed-top
-        div.navbar-inner
-          div.container
-            a.btn.btn-navbar(data-toggle="collapse", data-target=".nav-collapse")
-              i.icon-cog
-              a.brand(href="/")
-                span.brandname
-                  | #{marketing.name}
-                  sup
-                    | #{marketing.version} #{npm.version}
-            div.nav-collapse.collapse
-              ul.nav.pull-right
     div#view(data-ng-view)
-    footer
-      div.container-fluid
-        div.row-fluid
-          div#footer-contributors.span6
-            | By 
-            a(href="http://github.com/savvyparrot", target="_blank")
-              | Savvy Parrot
-            | .
-          div#footer-terms.span6
-        div.row-fluid
-          div#footer-copyright.span6
-            | &copy; 2013 Savvy Parrot
-          div#footer-terms.span6
     script(src="http://code.createjs.com/easeljs-0.6.0.min.js")
     script(src="http://code.createjs.com/tweenjs-0.4.0.min.js")
     script(src="http://code.createjs.com/movieclip-0.6.0.min.js")

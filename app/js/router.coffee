@@ -2,20 +2,12 @@ angular.module("app").config(['$routeProvider', '$locationProvider', ($routeProv
 
   # The home page
   $routeProvider.when '/',
-    templateUrl: 'angular/home.html'
+    templateUrl: 'angular/canvas.html'
     controller: 'HomeCtrl'
 
-  $routeProvider.when '/welcome',
-    templateUrl: 'angular/welcome.html'
-    controller: 'WelcomeCtrl'
-
-  $routeProvider.when '/pepi',
-    templateUrl: 'angular/pepi.html'
-    controller: 'PepiCtrl'
-
-  $routeProvider.when '/movie',
-    templateUrl: 'angular/movie.html'
-    controller: 'MovieCtrl'
+  $routeProvider.when '/example',
+    templateUrl: 'angular/canvas.html'
+    controller: 'ExampleCtrl'
 
   $routeProvider.otherwise redirectTo: '/'
 

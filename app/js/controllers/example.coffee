@@ -1,4 +1,4 @@
-angular.module("app").controller('HomeCtrl', ['$rootScope','$scope', '$http', '$location', '$window', ($rootScope, $scope, $http, $location, $window) ->
+angular.module("app").controller('ExampleCtrl', ['$rootScope','$scope', '$http', '$location', '$window', ($rootScope, $scope, $http, $location, $window) ->
 
   handleFileLoad = (event) ->
     if (event.item.type is 'image')
@@ -6,7 +6,7 @@ angular.module("app").controller('HomeCtrl', ['$rootScope','$scope', '$http', '$
     return
 
   handleComplete = () ->
-    movieClip = new SavvyParrot.HomeMovieClip(null, 0, false, window)
+    movieClip = new SavvyParrot.ExampleMovieClip(null, 0, false, window)
     stage.addChild(movieClip)
     stage.update()
 

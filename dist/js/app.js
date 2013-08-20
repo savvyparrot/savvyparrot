@@ -27177,6 +27177,51 @@ angular.element(document).find('head').append('<style type="text/css">@charset "
   }(this, 'SavvyParrot'));
 }.call(this));
 (function () {
+  (function (scope) {
+    'use strict';
+    var StageManager;
+    StageManager = function () {
+      function StageManager(stage) {
+        this.stage = stage;
+      }
+      StageManager.prototype.resizeStage = function () {
+        var gameArea, gameCanvas, h, newWidthToHeight, oh, ow, scale, w, widthToHeight;
+        gameArea = document.getElementById('gameArea');
+        ow = 1024;
+        oh = 768;
+        widthToHeight = 4 / 3;
+        w = window.innerWidth;
+        h = window.innerHeight;
+        newWidthToHeight = w / h;
+        if (newWidthToHeight > widthToHeight) {
+          w = h * widthToHeight;
+          gameArea.style.height = h + 'px';
+          gameArea.style.width = w + 'px';
+        } else {
+          h = w / widthToHeight;
+          gameArea.style.width = w + 'px';
+          gameArea.style.height = h + 'px';
+        }
+        gameArea.style.marginTop = -h / 2 + 'px';
+        gameArea.style.marginLeft = -w / 2 + 'px';
+        gameArea.style.fontSize = w / 400 + 'em';
+        gameCanvas = document.getElementById('gameCanvas');
+        gameCanvas.width = w;
+        gameCanvas.height = h;
+        scale = Math.min(w / ow, h / oh);
+        this.stage.scaleX = scale;
+        this.stage.scaleY = scale;
+        this.stage.update();
+      };
+      return StageManager;
+    }();
+    if (typeof scope === 'object' && scope.document && typeof scope.document === 'object') {
+      scope.SavvyParrot = scope.SavvyParrot || {};
+      scope.SavvyParrot.StageManager = StageManager;
+    }
+  }(typeof window === 'object' ? window : typeof module === 'object' ? module : void 0));
+}.call(this));
+(function () {
   var root = this;
   var previousUnderscore = root._;
   var breaker = {};
@@ -28141,301 +28186,6 @@ angular.element(document).find('head').append('<style type="text/css">@charset "
 (function () {
   (function (root, targetNS, localName, sp, cj) {
     root[targetNS][localName] = function (mode, startPosition, doLoop) {
-      var TIME_PEPI_ENTRANCE, TIME_PEPI_ON_STAGE, bubble, bubbleTween, island, islandTween, pepi, translate, welcomeSound;
-      this.initialize(mode, startPosition, doLoop, {});
-      TIME_PEPI_ENTRANCE = 16;
-      TIME_PEPI_ON_STAGE = TIME_PEPI_ENTRANCE + 31;
-      translate = function (target, startTime, startPoint, endTime, endPoint) {
-        var duration, dx, dy, i, tween, x, y, _i;
-        target.setTransform(startPoint.x, startPoint.y, 1, 1, 0, 0, 0, 0, 0);
-        target._off = false;
-        tween = cj.Tween.get(target);
-        tween.wait(startTime).to({ '_off': false }, 0);
-        duration = endTime - startTime;
-        x = startPoint.x;
-        y = startPoint.y;
-        dx = (endPoint.x - startPoint.x) / duration;
-        dy = (endPoint.y - startPoint.y) / duration;
-        for (i = _i = 1; 1 <= duration ? _i <= duration : _i >= duration; i = 1 <= duration ? ++_i : --_i) {
-          x += dx;
-          y += dy;
-          tween.wait(1).to({
-            'x': x,
-            'y': y
-          }, 0);
-        }
-        return tween;
-      };
-      welcomeSound = function () {
-        cj.Sound.play('sound-pepi', cj.Sound.INTERRUPT_EARLY, 0, 0, void 0);
-      };
-      pepi = new sp.Pepi();
-      this.timeline.addTween(translate(pepi, TIME_PEPI_ENTRANCE, new cj.Point(-450, -100), TIME_PEPI_ON_STAGE, new cj.Point(-110, 110)));
-      this.timeline.addTween(cj.Tween.get(this).wait(TIME_PEPI_ON_STAGE).call(welcomeSound));
-      bubble = new sp.Bubble('synched', 0, 'Hello Kids!\nWelcome to my island!', '#33FF66');
-      bubble.setTransform(684, 167.5, 1, 1, 0, 0, 0, 216, 92.5);
-      bubble._off = true;
-      bubbleTween = cj.Tween.get(bubble);
-      bubbleTween.wait(TIME_PEPI_ON_STAGE);
-      bubbleTween.to({
-        'startPosition': 0,
-        '_off': false
-      }, 0);
-      bubbleTween.wait(50);
-      bubbleTween.to({ '_off': true }, 0);
-      this.timeline.addTween(bubbleTween);
-      island = new sp.Island();
-      islandTween = cj.Tween.get(island);
-      this.timeline.addTween(islandTween);
-    };
-    root[targetNS][localName].prototype = new cj.MovieClip();
-    root[targetNS][localName].prototype.nominalBounds = new cj.Rectangle(0, 0, 1024, 768);
-  }(this, 'SavvyParrot', 'Adventure04Lesson001', SavvyParrot, createjs));
-}.call(this));
-(function () {
-  (function (root, targetNS, localName, savvy, cjs) {
-    root[targetNS][localName] = function (mode, startPosition, doLoop) {
-      var FarmMovieClip, alpha, args, i, island, islandTween, scale, tween2, welcomeSoundClip, x, y, _i, _j;
-      this.initialize(mode, startPosition, doLoop, {});
-      FarmMovieClip = function (mode, startPosition, doLoop) {
-        var farm0, farm1, tween;
-        this.initialize(mode, startPosition, doLoop, {});
-        farm0 = new SavvyParrot.Farm('synched', 0);
-        farm0.setTransform(97, 20.1);
-        farm0.alpha = 1;
-        farm1 = new SavvyParrot.Farm('synched', 0);
-        farm1.setTransform(512, 384);
-        farm1.alpha = 0.25;
-        tween = cjs.Tween.get({});
-        tween.to({ 'state': [{ t: farm0 }] });
-        tween.to({ 'state': [{ t: farm1 }] }, 24);
-        this.timeline.addTween(tween);
-      };
-      FarmMovieClip.prototype = new cjs.MovieClip();
-      FarmMovieClip.prototype.nominalBounds = new cjs.Rectangle(-414.9, -363.9, 1024, 768);
-      welcomeSoundClip = function () {
-        return createjs.Sound.play('sound-pepi', createjs.Sound.INTERRUPT_EARLY, 0, 0, void 0);
-      };
-      this.timeline.addTween(cjs.Tween.get(this).wait(119).call(welcomeSoundClip).wait(40));
-      this.instance = new SavvyParrot.Bubble('synched', 0, 'Hello Kids!\nWelcome to my island!', '#33FF66');
-      this.instance.setTransform(684, 167.5, 1, 1, 0, 0, 0, 216, 92.5);
-      this.instance._off = true;
-      this.timeline.addTween(cjs.Tween.get(this.instance).wait(119).to({
-        startPosition: 0,
-        _off: false
-      }, 0).wait(41));
-      this.instance_1 = new SavvyParrot.Pepi();
-      this.instance_1.setTransform(-253.9, 428.1, 1, 1, 0, 0, 0, 224.5, 331.2);
-      this.instance_1._off = true;
-      this.timeline.addTween(cjs.Tween.get(this.instance_1).wait(88).to({ _off: false }, 0).wait(1).to({
-        x: -238.4,
-        y: 426.9
-      }, 0).wait(1).to({
-        x: -222.9,
-        y: 425.7
-      }, 0).wait(1).to({
-        x: -207.5,
-        y: 424.5
-      }, 0).wait(1).to({
-        x: -192.1,
-        y: 423.3
-      }, 0).wait(1).to({
-        x: -176.6,
-        y: 422.1
-      }, 0).wait(1).to({
-        x: -161.2,
-        y: 420.9
-      }, 0).wait(1).to({
-        x: -145.8,
-        y: 419.7
-      }, 0).wait(1).to({
-        x: -130.3,
-        y: 418.5
-      }, 0).wait(1).to({
-        x: -114.9,
-        y: 417.3
-      }, 0).wait(1).to({
-        x: -99.4,
-        y: 416.1
-      }, 0).wait(1).to({
-        x: -84,
-        y: 414.9
-      }, 0).wait(1).to({
-        x: -68.6,
-        y: 413.7
-      }, 0).wait(1).to({
-        x: -53.1,
-        y: 412.5
-      }, 0).wait(1).to({
-        x: -37.7,
-        y: 411.3
-      }, 0).wait(1).to({
-        x: -22.3,
-        y: 410.1
-      }, 0).wait(1).to({
-        x: -6.8,
-        y: 409
-      }, 0).wait(1).to({
-        x: 8.5,
-        y: 407.8
-      }, 0).wait(1).to({
-        x: 23.9,
-        y: 406.6
-      }, 0).wait(1).to({
-        x: 39.3,
-        y: 405.4
-      }, 0).wait(1).to({
-        x: 54.8,
-        y: 404.2
-      }, 0).wait(1).to({
-        x: 70.2,
-        y: 403
-      }, 0).wait(1).to({
-        x: 85.6,
-        y: 401.8
-      }, 0).wait(1).to({
-        x: 101.1,
-        y: 400.6
-      }, 0).wait(1).to({
-        x: 116.5,
-        y: 399.4
-      }, 0).wait(1).to({
-        x: 131.9,
-        y: 398.2
-      }, 0).wait(1).to({
-        x: 147.4,
-        y: 397
-      }, 0).wait(1).to({
-        x: 162.8,
-        y: 395.8
-      }, 0).wait(1).to({
-        x: 178.2,
-        y: 394.6
-      }, 0).wait(1).to({
-        x: 193.7,
-        y: 393.4
-      }, 0).wait(1).to({
-        x: 209.1,
-        y: 392.2
-      }, 0).wait(1).to({
-        x: 224.5,
-        y: 391.1
-      }, 0).wait(41));
-      this.instance_2 = new FarmMovieClip();
-      this.instance_2.setTransform(961, 812.9, 1, 1, 0, 0, 0, 546, 448.9);
-      this.instance_2.alpha = 0;
-      this.instance_2._off = true;
-      tween2 = cjs.Tween.get(this.instance_2);
-      tween2.wait(34);
-      tween2.to({ _off: false }, 0);
-      tween2.to({ alpha: 1 }, 24);
-      tween2.wait(10);
-      tween2.to({ alpha: 0.211 }, 20);
-      tween2.wait(72);
-      this.timeline.addTween(tween2);
-      island = new SavvyParrot.Island();
-      island.setTransform(525.5, 384.4, 1, 1, 0, 0, 0, 525.5, 384.4);
-      islandTween = cjs.Tween.get(island);
-      islandTween.wait(1).to({
-        regX: 512,
-        regY: 384,
-        scaleX: 1.09,
-        scaleY: 1.09,
-        x: 542.6,
-        y: 391.5,
-        alpha: 0.98
-      }, 0);
-      scale = 1.18;
-      x = 573.2;
-      y = 399;
-      alpha = 0.959;
-      for (i = _i = 0; _i <= 31; i = ++_i) {
-        args = {
-          'scaleX': scale,
-          'scaleY': scale,
-          'x': x,
-          'y': y,
-          'alpha': alpha
-        };
-        islandTween.wait(1).to(args, 0);
-        scale += 0.0909677;
-        x += 30.5935;
-        y += 7.47096;
-        alpha -= 0.020387;
-      }
-      for (i = _j = 0; _j <= 11; i = ++_j) {
-        args = { 'alpha': alpha };
-        islandTween.wait(1).to(args, 0);
-        alpha -= 0.02;
-      }
-      islandTween.to({ _off: true }, 1);
-      this.timeline.addTween(islandTween);
-    };
-    root[targetNS][localName].prototype = new cjs.MovieClip();
-    root[targetNS][localName].prototype.nominalBounds = new cjs.Rectangle(0, 0, 1024, 768);
-  }(this, 'SavvyParrot', 'Adventure04Lesson002', SavvyParrot, createjs));
-}.call(this));
-(function () {
-  (function (root, targetNS, localName, savvy, cjs) {
-    root[targetNS][localName] = function (mode, startPosition, doLoop) {
-      var TIME_PEPI_ENTRANCE, TIME_WELCOME, args, bubble, bubbleTween, i, island, islandTween, pepi, pepiTween, welcomeSound, x, y, _i;
-      this.initialize(mode, startPosition, doLoop, {});
-      welcomeSound = function () {
-        cjs.Sound.play('sound-pepi', cjs.Sound.INTERRUPT_EARLY, 0, 0, void 0);
-      };
-      TIME_PEPI_ENTRANCE = 16;
-      TIME_WELCOME = TIME_PEPI_ENTRANCE + 31;
-      this.timeline.addTween(cjs.Tween.get(this).wait(TIME_WELCOME).call(welcomeSound).wait(40));
-      bubble = new savvy.Bubble('synched', 0, 'Goodbye Kids!\nSee you again soon! Aawk!!', '#33FF66');
-      bubble.setTransform(684, 167.5, 1, 1, 0, 0, 0, 216, 92.5);
-      bubble._off = true;
-      bubbleTween = cjs.Tween.get(bubble);
-      bubbleTween.wait(TIME_WELCOME);
-      bubbleTween.to({
-        'startPosition': 0,
-        '_off': false
-      }, 0);
-      bubbleTween.wait(50);
-      bubbleTween.to({ '_off': true }, 0);
-      this.timeline.addTween(bubbleTween);
-      pepi = new savvy.Pepi();
-      pepi.setTransform(-253.9, 428.1, 1, 1, 0, 0, 0, 224.5, 331.2);
-      pepi._off = true;
-      pepiTween = cjs.Tween.get(pepi);
-      pepiTween.wait(TIME_PEPI_ENTRANCE).to({ '_off': false }, 0);
-      x = -238.4;
-      y = 426.9;
-      for (i = _i = 0; _i <= 31; i = ++_i) {
-        args = {
-          'x': x,
-          'y': y
-        };
-        pepiTween.wait(1).to(args, 0);
-        x += 14.932258;
-        y -= 1.15483871;
-      }
-      this.timeline.addTween(pepiTween);
-      island = new savvy.Island();
-      island.setTransform(525.5, 384.4, 1, 1, 0, 0, 0, 525.5, 384.4);
-      islandTween = cjs.Tween.get(island);
-      islandTween.wait(1).to({
-        regX: 512,
-        regY: 384,
-        scaleX: 1.09,
-        scaleY: 1.09,
-        x: 542.6,
-        y: 391.5,
-        alpha: 0.98
-      }, 0);
-      this.timeline.addTween(islandTween);
-    };
-    root[targetNS][localName].prototype = new cjs.MovieClip();
-    root[targetNS][localName].prototype.nominalBounds = new cjs.Rectangle(0, 0, 1024, 768);
-  }(this, 'SavvyParrot', 'Adventure04Lesson003', SavvyParrot, createjs));
-}.call(this));
-(function () {
-  (function (root, targetNS, localName, sp, cj) {
-    root[targetNS][localName] = function (mode, startPosition, doLoop) {
       var DURATION_FADE_ISLAND, DURATION_PEPI_ENTRANCE, DURATION_SHOW_ISLAND, DURATION_SWAP_ISLAND_TO_FARM, DURATION_ZOOM_ISLAND_TO_FARM, TIME_BEGIN_FADE_ISLAND, TIME_BEGIN_PEPI_ENTRANCE, TIME_BEGIN_PEPI_WELCOME, TIME_BEGIN_SHOW_ISLAND, TIME_BEGIN_SWAP_ISLAND_TO_FARM, TIME_BEGIN_ZOOM_ISLAND_TO_FARM, TIME_END_FADE_ISLAND, TIME_END_PEPI_ENTRANCE, TIME_END_SHOW_ISLAND, TIME_END_SWAP_ISLAND_TO_FARM, TIME_END_ZOOM_ISLAND_TO_FARM, farm, farmArrival, island, islandArrival, pepi, pepiEntrance, playBubble, showBubble;
       this.initialize(mode, startPosition, doLoop, {});
       DURATION_FADE_ISLAND = 24;
@@ -28531,7 +28281,54 @@ angular.element(document).find('head').append('<style type="text/css">@charset "
     };
     root[targetNS][localName].prototype = new cj.MovieClip();
     root[targetNS][localName].prototype.nominalBounds = new cj.Rectangle(0, 0, 1024, 768);
-  }(this, 'SavvyParrot', 'Adventure04Lesson004', SavvyParrot, createjs));
+  }(this, 'SavvyParrot', 'ExampleMovieClip', SavvyParrot, createjs));
+}.call(this));
+(function () {
+  (function (root, targetNS, localName, sp, cj) {
+    root[targetNS][localName] = function (mode, startPosition, doLoop) {
+      var DURATION_FADE_ISLAND, DURATION_PEPI_ENTRANCE, DURATION_SHOW_ISLAND, TIME_BEGIN_FADE_ISLAND, TIME_BEGIN_PEPI_ENTRANCE, TIME_BEGIN_PEPI_WELCOME, TIME_BEGIN_SHOW_ISLAND, TIME_END_FADE_ISLAND, TIME_END_PEPI_ENTRANCE, TIME_END_SHOW_ISLAND, island, islandArrival, pepi, pepiEntrance;
+      this.initialize(mode, startPosition, doLoop, {});
+      DURATION_FADE_ISLAND = 24;
+      DURATION_SHOW_ISLAND = 12;
+      DURATION_PEPI_ENTRANCE = 32;
+      TIME_BEGIN_FADE_ISLAND = 0;
+      TIME_END_FADE_ISLAND = TIME_BEGIN_FADE_ISLAND + DURATION_FADE_ISLAND;
+      TIME_BEGIN_SHOW_ISLAND = TIME_END_FADE_ISLAND;
+      TIME_END_SHOW_ISLAND = TIME_BEGIN_SHOW_ISLAND + DURATION_SHOW_ISLAND;
+      TIME_BEGIN_PEPI_ENTRANCE = TIME_END_SHOW_ISLAND;
+      TIME_END_PEPI_ENTRANCE = TIME_BEGIN_PEPI_ENTRANCE + DURATION_PEPI_ENTRANCE;
+      TIME_BEGIN_PEPI_WELCOME = TIME_END_PEPI_ENTRANCE;
+      islandArrival = function (island) {
+        var tween;
+        tween = cj.Tween.get(island);
+        island.alpha = 0;
+        tween.to({ alpha: 1 }, DURATION_FADE_ISLAND);
+        return tween;
+      };
+      pepiEntrance = function (pepi, startPoint, endPoint) {
+        var tween;
+        pepi._off = false;
+        tween = cj.Tween.get(pepi);
+        tween.to({
+          x: startPoint.x,
+          y: startPoint.y
+        });
+        tween.wait(TIME_BEGIN_PEPI_ENTRANCE);
+        tween.to({ _off: false });
+        tween.to({
+          x: endPoint.x,
+          y: endPoint.y
+        }, DURATION_PEPI_ENTRANCE, cj.Ease.quadOut);
+        return tween;
+      };
+      island = new sp.Island();
+      pepi = new sp.Pepi();
+      this.timeline.addTween(pepiEntrance(pepi, new cj.Point(-450, -100), new cj.Point(-110, 110)));
+      this.timeline.addTween(islandArrival(island));
+    };
+    root[targetNS][localName].prototype = new cj.MovieClip();
+    root[targetNS][localName].prototype.nominalBounds = new cj.Rectangle(0, 0, 1024, 768);
+  }(this, 'SavvyParrot', 'HomeMovieClip', SavvyParrot, createjs));
 }.call(this));
 (function () {
   angular.module('app', [
@@ -28546,6 +28343,59 @@ angular.element(document).find('head').append('<style type="text/css">@charset "
   ]);
 }.call(this));
 (function () {
+  angular.module('app').controller('ExampleCtrl', [
+    '$rootScope',
+    '$scope',
+    '$http',
+    '$location',
+    '$window',
+    function ($rootScope, $scope, $http, $location, $window) {
+      var canvas, handleComplete, handleFileLoad, handleWindowResize, loader, manifest, stage, stageManager;
+      handleFileLoad = function (event) {
+        if (event.item.type === 'image') {
+          SavvyParrot.images[event.item.id] = event.result;
+        }
+      };
+      handleComplete = function () {
+        var movieClip;
+        movieClip = new SavvyParrot.ExampleMovieClip(null, 0, false, window);
+        stage.addChild(movieClip);
+        stage.update();
+        createjs.Ticker.setFPS(16);
+        createjs.Ticker.addEventListener('tick', stage);
+      };
+      handleWindowResize = function () {
+        stageManager.resizeStage();
+      };
+      manifest = [
+        {
+          src: '/img/farmhouse-1500x1201.png',
+          id: 'img-farmhouse'
+        },
+        {
+          src: '/img/island-1523x1219.png',
+          id: 'img-island'
+        },
+        {
+          src: '/sound/pepi.mp3|/sound/pepi.ogg',
+          id: 'sound-pepi'
+        }
+      ];
+      canvas = document.getElementById('gameCanvas');
+      stage = new createjs.Stage(canvas);
+      stageManager = new SavvyParrot.StageManager(stage);
+      window.addEventListener('resize', handleWindowResize, false);
+      window.addEventListener('orientationChange', handleWindowResize, false);
+      stageManager.resizeStage();
+      loader = new createjs.LoadQueue(false);
+      loader.installPlugin(createjs.Sound);
+      loader.addEventListener('fileload', handleFileLoad);
+      loader.addEventListener('complete', handleComplete);
+      return loader.loadManifest(manifest);
+    }
+  ]);
+}.call(this));
+(function () {
   angular.module('app').controller('HomeCtrl', [
     '$rootScope',
     '$scope',
@@ -28553,20 +28403,7 @@ angular.element(document).find('head').append('<style type="text/css">@charset "
     '$location',
     '$window',
     function ($rootScope, $scope, $http, $location, $window) {
-    }
-  ]);
-}.call(this));
-(function () {
-  angular.module('app').controller('MovieCtrl', [
-    '$rootScope',
-    '$scope',
-    '$http',
-    '$location',
-    '$window',
-    function ($rootScope, $scope, $http, $location, $window) {
-      var canvas, handleComplete, handleFileLoad, loader, manifest, stage;
-      canvas = document.getElementById('canvas');
-      stage = new createjs.Stage(canvas);
+      var canvas, handleComplete, handleFileLoad, handleWindowResize, loader, manifest, stage, stageManager;
       handleFileLoad = function (event) {
         if (event.item.type === 'image') {
           SavvyParrot.images[event.item.id] = event.result;
@@ -28574,11 +28411,14 @@ angular.element(document).find('head').append('<style type="text/css">@charset "
       };
       handleComplete = function () {
         var movieClip;
-        movieClip = new SavvyParrot.Adventure04Lesson004(null, 0, false, window);
+        movieClip = new SavvyParrot.HomeMovieClip(null, 0, false, window);
         stage.addChild(movieClip);
         stage.update();
         createjs.Ticker.setFPS(16);
         createjs.Ticker.addEventListener('tick', stage);
+      };
+      handleWindowResize = function () {
+        stageManager.resizeStage();
       };
       manifest = [
         {
@@ -28594,98 +28434,12 @@ angular.element(document).find('head').append('<style type="text/css">@charset "
           id: 'sound-pepi'
         }
       ];
-      loader = new createjs.LoadQueue(false);
-      loader.installPlugin(createjs.Sound);
-      loader.addEventListener('fileload', handleFileLoad);
-      loader.addEventListener('complete', handleComplete);
-      return loader.loadManifest(manifest);
-    }
-  ]);
-}.call(this));
-(function () {
-  angular.module('app').controller('PepiCtrl', [
-    '$rootScope',
-    '$scope',
-    '$http',
-    '$location',
-    '$window',
-    function ($rootScope, $scope, $http, $location, $window) {
-      var canvas, handleComplete, handleFileLoad, loader, manifest, stage;
-      canvas = document.getElementById('canvas');
+      canvas = document.getElementById('gameCanvas');
       stage = new createjs.Stage(canvas);
-      handleFileLoad = function (event) {
-        if (event.item.type === 'image') {
-          SavvyParrot.images[event.item.id] = event.result;
-        }
-      };
-      handleComplete = function () {
-        var movieClip;
-        movieClip = new SavvyParrot.Adventure04Lesson002(null, 0, false, window);
-        stage.addChild(movieClip);
-        stage.update();
-        createjs.Ticker.setFPS(16);
-        createjs.Ticker.addEventListener('tick', stage);
-      };
-      manifest = [
-        {
-          src: '/img/farmhouse-1500x1201.png',
-          id: 'img-farmhouse'
-        },
-        {
-          src: '/img/island-1523x1219.png',
-          id: 'img-island'
-        },
-        {
-          src: '/sound/pepi.mp3|/sound/pepi.ogg',
-          id: 'sound-pepi'
-        }
-      ];
-      loader = new createjs.LoadQueue(false);
-      loader.installPlugin(createjs.Sound);
-      loader.addEventListener('fileload', handleFileLoad);
-      loader.addEventListener('complete', handleComplete);
-      return loader.loadManifest(manifest);
-    }
-  ]);
-}.call(this));
-(function () {
-  angular.module('app').controller('WelcomeCtrl', [
-    '$rootScope',
-    '$scope',
-    '$http',
-    '$location',
-    '$window',
-    function ($rootScope, $scope, $http, $location, $window) {
-      var canvas, handleComplete, handleFileLoad, loader, manifest, stage;
-      canvas = document.getElementById('canvas');
-      stage = new createjs.Stage(canvas);
-      handleFileLoad = function (event) {
-        if (event.item.type === 'image') {
-          SavvyParrot.images[event.item.id] = event.result;
-        }
-      };
-      handleComplete = function () {
-        var movieClip;
-        movieClip = new SavvyParrot.Adventure04Lesson001(null, 0, false, window);
-        stage.addChild(movieClip);
-        stage.update();
-        createjs.Ticker.setFPS(16);
-        createjs.Ticker.addEventListener('tick', stage);
-      };
-      manifest = [
-        {
-          src: '/img/farmhouse-1500x1201.png',
-          id: 'img-farmhouse'
-        },
-        {
-          src: '/img/island-1523x1219.png',
-          id: 'img-island'
-        },
-        {
-          src: '/sound/pepi.mp3|/sound/pepi.ogg',
-          id: 'sound-pepi'
-        }
-      ];
+      stageManager = new SavvyParrot.StageManager(stage);
+      window.addEventListener('resize', handleWindowResize, false);
+      window.addEventListener('orientationChange', handleWindowResize, false);
+      stageManager.resizeStage();
       loader = new createjs.LoadQueue(false);
       loader.installPlugin(createjs.Sound);
       loader.addEventListener('fileload', handleFileLoad);
@@ -28735,20 +28489,12 @@ angular.element(document).find('head').append('<style type="text/css">@charset "
     '$locationProvider',
     function ($routeProvider, $locationProvider) {
       $routeProvider.when('/', {
-        templateUrl: 'angular/home.html',
+        templateUrl: 'angular/canvas.html',
         controller: 'HomeCtrl'
       });
-      $routeProvider.when('/welcome', {
-        templateUrl: 'angular/welcome.html',
-        controller: 'WelcomeCtrl'
-      });
-      $routeProvider.when('/pepi', {
-        templateUrl: 'angular/pepi.html',
-        controller: 'PepiCtrl'
-      });
-      $routeProvider.when('/movie', {
-        templateUrl: 'angular/movie.html',
-        controller: 'MovieCtrl'
+      $routeProvider.when('/example', {
+        templateUrl: 'angular/canvas.html',
+        controller: 'ExampleCtrl'
       });
       $routeProvider.otherwise({ redirectTo: '/' });
       return $locationProvider.html5Mode(true);
@@ -28782,13 +28528,6 @@ angular.element(document).find('head').append('<style type="text/css">@charset "
 angular.module('app').run([
   '$templateCache',
   function ($templateCache) {
-    $templateCache.put('angular/a-brand.html', '<a class="brand" href="/">\n' + '  <span class="brandname">{{marketing.name}} <sup class="version">{{marketing.version}} {{npm.version}}</sup></span>\n' + '</a>\n');
-    $templateCache.put('angular/a-home.html', '<a href="/">\n' + '  <i class="icon-home"></i>\n' + '  <span>Home</span>\n' + '</a>\n');
-    $templateCache.put('angular/form-search.html', '<form class="navbar-search pull-right ng-pristine ng-valid" method="GET" action="https://www.google.com/search">\n' + '  <input type="text" name="as_q" class="search-query" placeholder="Search">\n' + '  <input type="hidden" name="as_sitesearch" value="savvyparrot.com">\n' + '</form>\n');
-    $templateCache.put('angular/home.html', '<div id="home-view">\n' + '  <div class="subnavbar">\n' + '    <div class="subnavbar-inner">\n' + '      <div class="container">\n' + '        <a class="btn-subnavbar collapsed" data-toggle="collapse" data-target=".subnav-collapse">\n' + '          <i class="icon-reorder"></i>\n' + '        </a>\n' + '        <div class="subnav-collapse collapse">\n' + '          <ul class="mainnav">\n' + '            <li class="active">\n' + '              <a-home></a-home>\n' + '            </li>\n' + '          </ul>\n' + '        </div>\n' + '      </div>\n' + '    </div>\n' + '  </div>\n' + '\n' + '  <div class="container-fluid">\n' + '    <div class="row-fluid">\n' + '\n' + '    </div>\n' + '  </div>\n' + '</div>\n');
-    $templateCache.put('angular/movie.html', '<div id="pepe-view">\n' + '  <div class="subnavbar">\n' + '    <div class="subnavbar-inner">\n' + '      <div class="container">\n' + '        <a class="btn-subnavbar collapsed" data-toggle="collapse" data-target=".subnav-collapse">\n' + '          <i class="icon-reorder"></i>\n' + '        </a>\n' + '        <div class="subnav-collapse collapse">\n' + '          <ul class="mainnav">\n' + '            <li>\n' + '              <a-home></a-home>\n' + '            </li>\n' + '          </ul>\n' + '        </div>\n' + '      </div>\n' + '    </div>\n' + '  </div>\n' + '\n' + '  <div class="container-fluid">\n' + '    <div class="row-fluid">\n' + '      <canvas id="canvas" width="1024" height="768" style="background-color:#FFFFFF"></canvas>\n' + '    </div>\n' + '  </div>\n' + '</div>\n');
-    $templateCache.put('angular/pepi.html', '<div id="pepe-view">\n' + '  <div class="subnavbar">\n' + '    <div class="subnavbar-inner">\n' + '      <div class="container">\n' + '        <a class="btn-subnavbar collapsed" data-toggle="collapse" data-target=".subnav-collapse">\n' + '          <i class="icon-reorder"></i>\n' + '        </a>\n' + '        <div class="subnav-collapse collapse">\n' + '          <ul class="mainnav">\n' + '            <li>\n' + '              <a-home></a-home>\n' + '            </li>\n' + '          </ul>\n' + '        </div>\n' + '      </div>\n' + '    </div>\n' + '  </div>\n' + '\n' + '  <div class="container-fluid">\n' + '    <div class="row-fluid">\n' + '      <canvas id="canvas" width="1024" height="768" style="background-color:#FFFFFF"></canvas>\n' + '    </div>\n' + '  </div>\n' + '</div>\n');
-    $templateCache.put('angular/title-marketing.html', '<title>Adventures on Pepi\'s Island</title>');
-    $templateCache.put('angular/welcome.html', '<div id="pepe-view">\n' + '  <div class="subnavbar">\n' + '    <div class="subnavbar-inner">\n' + '      <div class="container">\n' + '        <a class="btn-subnavbar collapsed" data-toggle="collapse" data-target=".subnav-collapse">\n' + '          <i class="icon-reorder"></i>\n' + '        </a>\n' + '        <div class="subnav-collapse collapse">\n' + '          <ul class="mainnav">\n' + '            <li>\n' + '              <a-home></a-home>\n' + '            </li>\n' + '          </ul>\n' + '        </div>\n' + '      </div>\n' + '    </div>\n' + '  </div>\n' + '\n' + '  <div class="container-fluid">\n' + '    <div class="row-fluid">\n' + '      <canvas id="canvas" width="1024" height="768" style="background-color:#FFFFFF"></canvas>\n' + '    </div>\n' + '  </div>\n' + '</div>\n');
+    $templateCache.put('angular/canvas.html', '<div id="canvas-view">\n' + '  <div id="gameArea">\n' + '    <canvas id="gameCanvas"></canvas>\n' + '  <div>\n' + '</div>\n');
   }
 ]);

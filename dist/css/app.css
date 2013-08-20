@@ -6,6 +6,18 @@
 .x-ng-cloak {
   display: none;
 }
+body {
+  overflow: hidden;
+}
+#gameArea {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+}
+#gameCanvas {
+  width: 100%;
+  height: 100%;
+}
 
 .clearfix {
   *zoom: 1;
@@ -7186,6 +7198,18 @@ a.badge:focus {
 .ng-cloak,
 .x-ng-cloak {
   display: none;
+}
+body {
+  overflow: hidden;
+}
+#gameArea {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+}
+#gameCanvas {
+  width: 100%;
+  height: 100%;
 }
 
 
